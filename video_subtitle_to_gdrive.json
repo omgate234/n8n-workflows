@@ -1,0 +1,623 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "upload",
+        "collection_id": "c-13c321cd-0d5f-4f90-872e-24e60d5ec61d",
+        "url": "={{ $json['Youtube Video URL'] }}",
+        "name": "=",
+        "description": "File to be dubbed to French"
+      },
+      "type": "@videodb/n8n-nodes-videodb.videoDb",
+      "typeVersion": 1,
+      "position": [
+        576,
+        256
+      ],
+      "id": "7df6bd71-c844-4cd3-ba3d-83a1c8bfb67d",
+      "name": "VideoDB",
+      "credentials": {
+        "videoDBApi": {
+          "id": "your-videodb-credential-id",
+          "name": "VideoDB Credential"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        800,
+        256
+      ],
+      "id": "473f2300-1ace-4b4a-b8f6-e52bf567dbcd",
+      "name": "Wait",
+      "webhookId": "3db670b3-2254-47e4-93f8-ac668963ab81"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('VideoDB').item.json.data.output_url }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "videoDBApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1024,
+        176
+      ],
+      "id": "ee9799bf-7c91-4597-b871-3f701ea2b51d",
+      "name": "HTTP Request",
+      "credentials": {
+        "videoDBApi": {
+          "id": "your-videodb-credential-id",
+          "name": "VideoDB Credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b379ca2c-d86d-47d7-9ac9-446ac47721fb",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "complete",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1248,
+        256
+      ],
+      "id": "750a7801-fabe-44b1-828b-180b9f8fdd50",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "formTitle": "YouTube Video URL to Dub",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Youtube Video URL",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        352,
+        256
+      ],
+      "id": "26c93177-4422-4463-a109-6caa71b340b5",
+      "name": "On form submission",
+      "webhookId": "02763c93-74fe-40a0-8988-5fa33d0d558d"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1696,
+        256
+      ],
+      "id": "772394f9-d5c7-404d-82b9-a7d334cf1282",
+      "name": "Wait1",
+      "webhookId": "3db670b3-2254-47e4-93f8-ac668963ab81"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('VideoDB Indexing').item.json.data.output_url }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "videoDBApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1920,
+        176
+      ],
+      "id": "60e0b0bc-b421-45f8-914f-794ef0d6e336",
+      "name": "HTTP Request1",
+      "credentials": {
+        "videoDBApi": {
+          "id": "your-videodb-credential-id",
+          "name": "VideoDB Credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "stream_link": "={{ $json.data.stream_link }}",
+        "name": "={{ $('HTTP Request').item.json.response.data.name }}"
+      },
+      "type": "@videodb/n8n-nodes-videodb.videoDb",
+      "typeVersion": 1,
+      "position": [
+        2592,
+        240
+      ],
+      "id": "53d37aae-b3ce-4a68-a491-1c56c65567e9",
+      "name": "Video Download URL",
+      "credentials": {
+        "videoDBApi": {
+          "id": "your-videodb-credential-id",
+          "name": "VideoDB Credential"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2816,
+        240
+      ],
+      "id": "70bf4279-8021-4983-a0a0-ff34de9d9bb5",
+      "name": "Wait2",
+      "webhookId": "3db670b3-2254-47e4-93f8-ac668963ab81"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Video Download URL').item.json.data.output_url }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "videoDBApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3040,
+        160
+      ],
+      "id": "13a0b5b0-0dbd-4582-b662-dbc5745a0474",
+      "name": "HTTP Request Download",
+      "credentials": {
+        "videoDBApi": {
+          "id": "your-videodb-credential-id",
+          "name": "VideoDB Credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b379ca2c-d86d-47d7-9ac9-446ac47721fb",
+              "leftValue": "={{ $json.data.status }}",
+              "rightValue": "done",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3264,
+        240
+      ],
+      "id": "b351c25e-32f9-46e4-a8e6-8e256453c35a",
+      "name": "If Download URL"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.data.download_url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3504,
+        224
+      ],
+      "id": "5faa1557-9dc1-4fa3-be4e-091170bc482a",
+      "name": "HTTP Request Download File"
+    },
+    {
+      "parameters": {
+        "name": "={{ $json.data.name }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1YW39wRNL4sHlPLQmM2rnKM5mnCmVOT4W",
+          "mode": "list",
+          "cachedResultName": "Subtitled Videos",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/YOUR_FOLDER_ID"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        3728,
+        224
+      ],
+      "id": "92438108-723b-45cd-bdb6-92f2a259b715",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "your-googledrive-credential-id",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Video Upload to VideoDB",
+        "height": 432,
+        "width": 1152,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        272,
+        48
+      ],
+      "typeVersion": 1,
+      "id": "daa63ab3-dda9-490b-952c-81101c50f2ce",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "# Indexing the spoken content and Adding Subtitles",
+        "height": 432,
+        "width": 1072,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1440,
+        48
+      ],
+      "typeVersion": 1,
+      "id": "da7f83fa-958f-4ba6-b56b-76ec1780e86f",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "# Generating the Download URL\n",
+        "height": 432,
+        "width": 880,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2528,
+        48
+      ],
+      "typeVersion": 1,
+      "id": "7ad9f8a0-0e0a-4c64-b646-ea1cf950a094",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "# Uploading to GDrive\n",
+        "height": 432,
+        "width": 528,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3424,
+        48
+      ],
+      "typeVersion": 1,
+      "id": "77432f3f-4391-4821-aa7e-0679c17954bd",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "operation": "indexSpokenWords",
+        "collection_id": "={{ $('HTTP Request').item.json.response.data.collection_id }}",
+        "video_id": "={{ $('HTTP Request').item.json.response.data.id }}",
+        "language_code": "en_us"
+      },
+      "type": "@videodb/n8n-nodes-videodb.videoDb",
+      "typeVersion": 1,
+      "position": [
+        1472,
+        256
+      ],
+      "id": "edb72ad5-75e8-4b3c-9de1-10e47ef10cd4",
+      "name": "VideoDB Indexing",
+      "credentials": {
+        "videoDBApi": {
+          "id": "your-videodb-credential-id",
+          "name": "VideoDB Credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b379ca2c-d86d-47d7-9ac9-446ac47721fb",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "done",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2144,
+        256
+      ],
+      "id": "1a7255b3-39c5-44ad-b547-28b61f5d1fa3",
+      "name": "If Indexed"
+    },
+    {
+      "parameters": {
+        "operation": "addSubtitle",
+        "collection_id": "={{ $('HTTP Request').item.json.response.data.collection_id }}",
+        "video_id": "={{ $('HTTP Request').item.json.response.data.id }}"
+      },
+      "type": "@videodb/n8n-nodes-videodb.videoDb",
+      "typeVersion": 1,
+      "position": [
+        2352,
+        240
+      ],
+      "id": "9dfb8825-2bf9-481e-8ae9-5e39f37bbb43",
+      "name": "Video Subtitle",
+      "credentials": {
+        "videoDBApi": {
+          "id": "your-videodb-credential-id",
+          "name": "VideoDB Credential"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "VideoDB": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "VideoDB Indexing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "VideoDB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "If Indexed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Video Download URL": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request Download",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request Download": {
+      "main": [
+        [
+          {
+            "node": "If Download URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Download URL": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request Download File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request Download File": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VideoDB Indexing": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Indexed": {
+      "main": [
+        [
+          {
+            "node": "Video Subtitle",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Video Subtitle": {
+      "main": [
+        [
+          {
+            "node": "Video Download URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "cadf42e8f7c4b9bb1732d8ef114ee6eb79df24052148682da6f90820da5050d2"
+  }
+}

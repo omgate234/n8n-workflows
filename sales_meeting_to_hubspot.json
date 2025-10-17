@@ -1,0 +1,620 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "indexSpokenWords",
+        "video_id": "={{ $json.data.video_id }}",
+        "force": true
+      },
+      "type": "@videodb/n8n-nodes-videodb.videoDb",
+      "typeVersion": 1,
+      "position": [
+        1152,
+        256
+      ],
+      "id": "f34aec6e-b2e8-4b35-a035-55c7e3dc7c5b",
+      "name": "VideoDB Spoken Indexing",
+      "credentials": {
+        "videoDBApi": {
+          "id": "your-videodb-credential-id",
+          "name": "VideoDB Credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getTranscript",
+        "video_id": "={{ $('VideoDB Get Meeting').item.json.data.video_id }}",
+        "start": "=0",
+        "end": "=0",
+        "force": true
+      },
+      "type": "@videodb/n8n-nodes-videodb.videoDb",
+      "typeVersion": 1,
+      "position": [
+        2048,
+        256
+      ],
+      "id": "c17c1d37-bf3c-4779-848e-f70f98f5dfcc",
+      "name": "VideoDB Transcript",
+      "credentials": {
+        "videoDBApi": {
+          "id": "your-videodb-credential-id",
+          "name": "VideoDB Credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Interview Meeting",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Meeting URL",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        32,
+        256
+      ],
+      "id": "35be73aa-0fa2-4da3-aa36-b3e1beb1ceeb",
+      "name": "Form",
+      "webhookId": "aed43ac6-7768-4f66-9220-4d2652b8401c"
+    },
+    {
+      "parameters": {
+        "operation": "recordMeeting",
+        "collection_id": "default",
+        "meeting_url": "={{ $json['Meeting URL'] }}",
+        "bot_name": "VideoDB Meeting Recorder",
+        "meeting_title": "={{ $json['Meeting Type'] }}"
+      },
+      "type": "@videodb/n8n-nodes-videodb.videoDb",
+      "typeVersion": 1,
+      "position": [
+        256,
+        256
+      ],
+      "id": "5431cbbb-e5ed-4c61-b82b-0cd4d98e336b",
+      "name": "VideoDB Record Meeting",
+      "credentials": {
+        "videoDBApi": {
+          "id": "your-videodb-credential-id",
+          "name": "VideoDB Credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getMeeting",
+        "collection_id": "=default",
+        "meeting_id": "={{ $('VideoDB Record Meeting').item.json.data.meeting_id }}"
+      },
+      "type": "@videodb/n8n-nodes-videodb.videoDb",
+      "typeVersion": 1,
+      "position": [
+        704,
+        192
+      ],
+      "id": "9cac84b1-edc1-4352-8659-366c78435b73",
+      "name": "VideoDB Get Meeting",
+      "credentials": {
+        "videoDBApi": {
+          "id": "your-videodb-credential-id",
+          "name": "VideoDB Credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        480,
+        256
+      ],
+      "id": "cd2fa717-2f47-4530-ad61-d72a3421dba4",
+      "name": "Wait For Meeting",
+      "webhookId": "2923bf8e-5a7e-4f05-a669-46f250debe9e"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3b6fc6ca-f4c2-462d-869e-6b540faffe54",
+              "leftValue": "={{ $json.data.status }}",
+              "rightValue": "done",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        928,
+        256
+      ],
+      "id": "bd8480d8-094c-4dda-9148-b22db152bf9a",
+      "name": "If Meeting"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1376,
+        256
+      ],
+      "id": "23c51cdb-2881-4d3d-9070-f2a61167def9",
+      "name": "Wait For Indexing",
+      "webhookId": "54ef1fee-5c18-4a20-887e-cb14c0ffb567"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('VideoDB Spoken Indexing').item.json.data.output_url }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "videoDBApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1600,
+        192
+      ],
+      "id": "ad6d784e-39e2-46b7-b611-9e4304b4694c",
+      "name": "HTTP Request Indexing",
+      "credentials": {
+        "videoDBApi": {
+          "id": "your-videodb-credential-id",
+          "name": "VideoDB Credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3b6fc6ca-f4c2-462d-869e-6b540faffe54",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "done",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1824,
+        256
+      ],
+      "id": "fda36ee1-811b-43f0-8829-53178607b057",
+      "name": "If Indexing"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get webhook data and transcript data\nconst meetingData = $('VideoDB Get Meeting').first().json.data;\nconst transcriptData = $('VideoDB Transcript').first().json.data;\n\n/**\n * Groups consecutive words by the same speaker into segments.\n * Handles silence markers and creates coherent conversation segments.\n */\nfunction groupWordsIntoSegments(wordData) {\n    if (!wordData || wordData.length === 0) {\n        return [];\n    }\n    \n    const segments = [];\n    let currentSegment = null;\n    \n    for (const word of wordData) {\n        // Skip silence markers and entries without speaker info\n        if (!word.speaker || word.speaker === \"-\" || !word.text || word.text === \"-\") {\n            continue;\n        }\n        \n        // Start new segment if speaker changes or this is the first word\n        if (!currentSegment || currentSegment.speakerLabel !== word.speaker) {\n            // Save previous segment if exists\n            if (currentSegment) {\n                segments.push({\n                    speakerLabel: currentSegment.speakerLabel,\n                    start: currentSegment.start,\n                    end: currentSegment.end,\n                    text: currentSegment.words.join(\" \").trim()\n                });\n            }\n            \n            // Start new segment\n            currentSegment = {\n                speakerLabel: word.speaker,\n                start: word.start,\n                end: word.end,\n                words: [word.text]\n            };\n        } else {\n            // Continue current segment\n            currentSegment.words.push(word.text);\n            currentSegment.end = word.end;\n        }\n    }\n    \n    // Don't forget the last segment\n    if (currentSegment) {\n        segments.push({\n            speakerLabel: currentSegment.speakerLabel,\n            start: currentSegment.start,\n            end: currentSegment.end,\n            text: currentSegment.words.join(\" \").trim()\n        });\n    }\n    \n    return segments;\n}\n\n/**\n * Creates a mapping from speaker labels (A, B, etc.) to actual names\n * using a scoring system based on temporal proximity and pattern matching.\n */\nfunction createSpeakerMapping(segments, speakerTimeline) {\n    // Get unique speaker labels from transcript\n    const uniqueLabels = [...new Set(segments.map(s => s.speakerLabel))];\n    \n    // Get unique speaker names from timeline (excluding Unknown)\n    const uniqueNames = [...new Set(\n        speakerTimeline\n            .filter(entry => entry.speaker_name && entry.speaker_name !== \"Unknown Speaker\")\n            .map(entry => entry.speaker_name)\n    )];\n    \n    // If we have a simple 1-to-1 or 2-to-2 mapping, use advanced scoring\n    if (uniqueLabels.length <= uniqueNames.length && uniqueNames.length <= 3) {\n        return createAdvancedMapping(segments, speakerTimeline, uniqueLabels, uniqueNames);\n    }\n    \n    // Fallback to simple proximity-based mapping\n    return createProximityMapping(segments, speakerTimeline, uniqueLabels);\n}\n\n/**\n * Advanced mapping using scoring based on multiple factors\n */\nfunction createAdvancedMapping(segments, timeline, labels, names) {\n    const mapping = {};\n    const scores = {};\n    \n    // Initialize scores\n    for (const label of labels) {\n        scores[label] = {};\n        for (const name of names) {\n            scores[label][name] = 0;\n        }\n    }\n    \n    // Score based on temporal proximity\n    for (const segment of segments) {\n        const segmentMidpoint = (segment.start + segment.end) / 2;\n        \n        for (const entry of timeline) {\n            if (entry.speaker_name === \"Unknown Speaker\") continue;\n            \n            const timeDiff = Math.abs(segmentMidpoint - entry.start_time_seconds);\n            \n            // Score inversely proportional to time difference\n            // Closer events get higher scores\n            const proximityScore = Math.max(0, 10 - timeDiff);\n            \n            // Bonus points for exact or very close matches\n            if (timeDiff < 0.5) {\n                scores[segment.speakerLabel][entry.speaker_name] += 20;\n            } else if (timeDiff < 2) {\n                scores[segment.speakerLabel][entry.speaker_name] += 10;\n            }\n            \n            scores[segment.speakerLabel][entry.speaker_name] += proximityScore;\n        }\n    }\n    \n    // Analyze conversation patterns\n    // If speakers alternate frequently, boost scores for alternating pattern\n    if (segments.length > 4) {\n        const alternationBonus = analyzeAlternationPattern(segments, timeline, names);\n        for (const label in alternationBonus) {\n            for (const name in alternationBonus[label]) {\n                scores[label][name] += alternationBonus[label][name];\n            }\n        }\n    }\n    \n    // Assign each label to the name with highest score\n    const usedNames = new Set();\n    \n    // Sort labels by their max score to assign high-confidence mappings first\n    const sortedLabels = labels.sort((a, b) => {\n        const maxA = Math.max(...Object.values(scores[a]));\n        const maxB = Math.max(...Object.values(scores[b]));\n        return maxB - maxA;\n    });\n    \n    for (const label of sortedLabels) {\n        let bestName = null;\n        let bestScore = -1;\n        \n        for (const name of names) {\n            if (!usedNames.has(name) && scores[label][name] > bestScore) {\n                bestScore = scores[label][name];\n                bestName = name;\n            }\n        }\n        \n        if (bestName) {\n            mapping[label] = bestName;\n            usedNames.add(bestName);\n        }\n    }\n    \n    // Fallback for any unmapped labels\n    for (const label of labels) {\n        if (!mapping[label]) {\n            // Assign to any unused name or first available name\n            const unusedName = names.find(n => !usedNames.has(n));\n            mapping[label] = unusedName || names[0];\n        }\n    }\n    \n    return mapping;\n}\n\n/**\n * Analyzes conversation alternation patterns to improve speaker identification\n */\nfunction analyzeAlternationPattern(segments, timeline, names) {\n    const bonus = {};\n    const labels = [...new Set(segments.map(s => s.speakerLabel))];\n    \n    // Initialize bonus structure\n    for (const label of labels) {\n        bonus[label] = {};\n        for (const name of names) {\n            bonus[label][name] = 0;\n        }\n    }\n    \n    // Look for alternating speaker patterns in timeline\n    for (let i = 0; i < timeline.length - 1; i++) {\n        const current = timeline[i];\n        const next = timeline[i + 1];\n        \n        if (current.speaker_name === \"Unknown Speaker\" || \n            next.speaker_name === \"Unknown Speaker\") continue;\n        \n        // Find segments that match this alternation timing\n        for (let j = 0; j < segments.length - 1; j++) {\n            const seg1 = segments[j];\n            const seg2 = segments[j + 1];\n            \n            // Check if segment timing aligns with timeline alternation\n            const timeDiff1 = Math.abs(seg1.start - current.start_time_seconds);\n            const timeDiff2 = Math.abs(seg2.start - next.start_time_seconds);\n            \n            if (timeDiff1 < 3 && timeDiff2 < 3 && seg1.speakerLabel !== seg2.speakerLabel) {\n                bonus[seg1.speakerLabel][current.speaker_name] += 5;\n                bonus[seg2.speakerLabel][next.speaker_name] += 5;\n            }\n        }\n    }\n    \n    return bonus;\n}\n\n/**\n * Simple proximity-based mapping for complex scenarios\n */\nfunction createProximityMapping(segments, timeline, labels) {\n    const mapping = {};\n    \n    for (const label of labels) {\n        const labelSegments = segments.filter(s => s.speakerLabel === label);\n        if (labelSegments.length === 0) continue;\n        \n        // Find the most common speaker name near this label's segments\n        const nameCounts = {};\n        \n        for (const segment of labelSegments) {\n            const nearestSpeaker = findNearestSpeaker(segment.start, timeline);\n            if (nearestSpeaker && nearestSpeaker !== \"Unknown Speaker\") {\n                nameCounts[nearestSpeaker] = (nameCounts[nearestSpeaker] || 0) + 1;\n            }\n        }\n        \n        // Assign the most frequent nearby speaker\n        let bestName = null;\n        let bestCount = 0;\n        for (const [name, count] of Object.entries(nameCounts)) {\n            if (count > bestCount) {\n                bestCount = count;\n                bestName = name;\n            }\n        }\n        \n        mapping[label] = bestName || \"Unknown Speaker\";\n    }\n    \n    return mapping;\n}\n\n/**\n * Finds the nearest speaker at or before the given timestamp\n */\nfunction findNearestSpeaker(timestamp, timeline) {\n    let nearestSpeaker = null;\n    let nearestTime = -Infinity;\n    \n    for (const entry of timeline) {\n        if (entry.start_time_seconds <= timestamp && \n            entry.start_time_seconds > nearestTime) {\n            nearestTime = entry.start_time_seconds;\n            nearestSpeaker = entry.speaker_name;\n        }\n    }\n    \n    // If no speaker found before timestamp, look for closest after\n    if (!nearestSpeaker) {\n        let minDiff = Infinity;\n        for (const entry of timeline) {\n            const diff = Math.abs(entry.start_time_seconds - timestamp);\n            if (diff < minDiff) {\n                minDiff = diff;\n                nearestSpeaker = entry.speaker_name;\n            }\n        }\n    }\n    \n    return nearestSpeaker;\n}\n\n/**\n * Applies the speaker mapping to segments and handles edge cases\n */\nfunction assignSpeakers(segments, speakerMapping) {\n    const finalTranscript = [];\n    let lastKnownSpeaker = null;\n    \n    for (const segment of segments) {\n        let assignedSpeaker = speakerMapping[segment.speakerLabel];\n        \n        // Handle unknown speakers\n        if (!assignedSpeaker || assignedSpeaker === \"Unknown Speaker\") {\n            // Try to use last known speaker if the gap is small\n            if (lastKnownSpeaker && segments.indexOf(segment) > 0) {\n                const prevSegment = segments[segments.indexOf(segment) - 1];\n                const gap = segment.start - prevSegment.end;\n                \n                // If gap is less than 2 seconds, likely the same speaker\n                if (gap < 2) {\n                    assignedSpeaker = lastKnownSpeaker;\n                }\n            }\n        }\n        \n        // Update last known speaker if we have a valid assignment\n        if (assignedSpeaker && assignedSpeaker !== \"Unknown Speaker\") {\n            lastKnownSpeaker = assignedSpeaker;\n        }\n        \n        finalTranscript.push({\n            speaker: assignedSpeaker || \"Unknown Speaker\",\n            text: segment.text\n        });\n    }\n    \n    return finalTranscript;\n}\n\n/**\n * Post-processing to merge consecutive segments from the same speaker\n */\nfunction mergeConsecutiveSegments(transcript) {\n    if (transcript.length === 0) return transcript;\n    \n    const merged = [];\n    let currentMerged = { ...transcript[0] };\n    \n    for (let i = 1; i < transcript.length; i++) {\n        const segment = transcript[i];\n        \n        // Check if same speaker and small time gap\n        if (segment.speaker === currentMerged.speaker && \n            segment.start - currentMerged.end < 1.0) {\n            // Merge segments\n            currentMerged.end = segment.end;\n            currentMerged.text += \" \" + segment.text;\n        } else {\n            // Save current and start new\n            merged.push(currentMerged);\n            currentMerged = { ...segment };\n        }\n    }\n    \n    // Don't forget the last segment\n    merged.push(currentMerged);\n    \n    return merged;\n}\n\n// Main processing pipeline\ntry {\n    // Extract the required data\n    const speakerTimeline = meetingData.speaker_timeline;\n    const wordData = transcriptData.word_timestamps;\n    \n    // Step 1: Group words into conversation segments\n    const segments = groupWordsIntoSegments(wordData);\n    \n    // Step 2: Create speaker label to name mapping\n    const speakerMapping = createSpeakerMapping(segments, speakerTimeline);\n    \n    // Step 3: Apply mapping to segments\n    const transcript = assignSpeakers(segments, speakerMapping);\n    \n    // Step 4: Merge consecutive segments from same speaker\n    const finalTranscript = mergeConsecutiveSegments(transcript);\n    \n    // Get the current date and time\n    const now = new Date();\n    const formattedDate = now.getFullYear() + '-' +\n        ('0' + (now.getMonth() + 1)).slice(-2) + '-' +\n        ('0' + now.getDate()).slice(-2);\n    \n    // Return the result\n    return [{\n        date: formattedDate,\n        transcript: finalTranscript\n    }];\n} catch (error) {\n    return [{\n        error: error.message,\n        date: new Date().toISOString(),\n        transcript: []\n    }];\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2272,
+        256
+      ],
+      "id": "1df7f6b1-d8d9-449d-b959-23671185f2c6",
+      "name": "Code Transcript"
+    },
+    {
+      "parameters": {
+        "operation": "generateText",
+        "collection_id": "default",
+        "prompt": "=You are given a transcript of a sales call. Your task is to extract key information and return a valid JSON object with the following fields. All fields are mandatory.\n\ndeal_name (string): The company or individual's name for the deal.\n\ndeal_stage (string): The current stage of the deal. Possible values: 'appointmentscheduled', 'qualifiedtobuy', 'presentationscheduled', 'decisionmakerboughtin', 'contractsent', 'closedwon', 'closedlost'. Default to 'appointmentscheduled' if not clearly stated.\n\namount (string): The total monetary value of the deal as a number, encased as a string (e.g., '15000'). If not explicit, infer or state '0'.\n\ndescription (string): A concise summary of the meeting, highlighting key takeaways or next steps discussed (maximum 200 words).\n\n⚠️ Only return valid JSON. Do not add any extra text, headings, markdown, or commentary. ⚠️\n\nTranscript: {{ JSON.stringify($('Code Transcript').item.json.transcript) }}\n\n",
+        "model_name": "ultra",
+        "response_type": "json"
+      },
+      "type": "@videodb/n8n-nodes-videodb.videoDb",
+      "typeVersion": 1,
+      "position": [
+        2496,
+        256
+      ],
+      "id": "deaf8984-9d98-44dd-9f4b-585d69d00f41",
+      "name": "VideoDB Meeting Insights",
+      "credentials": {
+        "videoDBApi": {
+          "id": "your-videodb-credential-id",
+          "name": "VideoDB Credential"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2720,
+        256
+      ],
+      "id": "4a60fe6f-7a7b-4e91-a5d2-c8ecb3c2c83a",
+      "name": "Wait For Insights",
+      "webhookId": "1c2b70ce-b6fa-4064-b611-a084ba697ee0"
+    },
+    {
+      "parameters": {
+        "content": "# Recording the Sales Meeting and fetching its details\n",
+        "height": 528,
+        "width": 1088,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "077a07ed-9576-44e8-98c1-270bbb07e90e",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "# Indexing the spoken words, fetching and formatting the transcript\n\n",
+        "height": 528,
+        "width": 1312,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1104,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "c0d89f5b-feb0-48f3-a095-945ded00d9df",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "# Generating Sales Insights",
+        "height": 528,
+        "width": 896,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2432,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "93eec07b-76a0-4891-b66b-c676e4ce3402",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.data.output_url }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "videoDBApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2944,
+        192
+      ],
+      "id": "82cc3eba-dfbb-48d9-9d8b-bf19175a014d",
+      "name": "HTTP Request Insights",
+      "credentials": {
+        "videoDBApi": {
+          "id": "your-videodb-credential-id",
+          "name": "VideoDB Credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3b6fc6ca-f4c2-462d-869e-6b540faffe54",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "complete",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3168,
+        256
+      ],
+      "id": "cab11815-6f86-48de-ba10-3b2bed4a2cc1",
+      "name": "If complete"
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "resource": "deal",
+        "stage": "={{ $json.response.data.output.deal_stage }}",
+        "additionalFields": {
+          "amount": "={{ $json.response.data.output.amount }}",
+          "description": "={{ $json.response.data.output.description }}",
+          "dealName": "={{ $json.response.data.output.deal_name }}"
+        }
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        3472,
+        240
+      ],
+      "id": "24e89ea3-5c01-48a1-8cd0-6aef47ea91bc",
+      "name": "Create a deal",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "your-hubspot-credential-id",
+          "name": "HubSpot Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Create Hubspot Deal\n",
+        "height": 528,
+        "width": 432,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3360,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "eb69a5ce-3b09-4110-89fa-16ab58d08428",
+      "name": "Sticky Note16"
+    }
+  ],
+  "connections": {
+    "VideoDB Spoken Indexing": {
+      "main": [
+        [
+          {
+            "node": "Wait For Indexing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VideoDB Transcript": {
+      "main": [
+        [
+          {
+            "node": "Code Transcript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Form": {
+      "main": [
+        [
+          {
+            "node": "VideoDB Record Meeting",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VideoDB Record Meeting": {
+      "main": [
+        [
+          {
+            "node": "Wait For Meeting",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VideoDB Get Meeting": {
+      "main": [
+        [
+          {
+            "node": "If Meeting",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait For Meeting": {
+      "main": [
+        [
+          {
+            "node": "VideoDB Get Meeting",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Meeting": {
+      "main": [
+        [
+          {
+            "node": "VideoDB Spoken Indexing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait For Meeting",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait For Indexing": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request Indexing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request Indexing": {
+      "main": [
+        [
+          {
+            "node": "If Indexing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Indexing": {
+      "main": [
+        [
+          {
+            "node": "VideoDB Transcript",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait For Indexing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code Transcript": {
+      "main": [
+        [
+          {
+            "node": "VideoDB Meeting Insights",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VideoDB Meeting Insights": {
+      "main": [
+        [
+          {
+            "node": "Wait For Insights",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait For Insights": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request Insights",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request Insights": {
+      "main": [
+        [
+          {
+            "node": "If complete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If complete": {
+      "main": [
+        [
+          {
+            "node": "Create a deal",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait For Insights",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "cadf42e8f7c4b9bb1732d8ef114ee6eb79df24052148682da6f90820da5050d2"
+  }
+}
