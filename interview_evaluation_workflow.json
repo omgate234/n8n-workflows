@@ -2,16 +2,25 @@
   "nodes": [
     {
       "parameters": {
+        "content": "# Interview Evaluation Workflow\n\nRecord interviews and generate structured candidate evaluations for Coda and Slack.\n\n### How it works\n1. Submit interview meeting URL via form\n2. VideoDB bot joins and records the interview\n3. Transcript generated with speaker identification\n4. AI extracts candidate details, strengths, and recommendations\n5. Evaluation sent to Coda table and Slack channel\n\n### Setup steps\n1. Add **VideoDB API** credentials\n2. Configure **Coda** document and table IDs\n3. Set up **Slack** bot and hiring channel\n4. Activate workflow and share form URL",
+        "height": 520,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [-4400, 448],
+      "typeVersion": 1,
+      "id": "main-sticky-note-001",
+      "name": "Sticky Note Main"
+    },
+    {
+      "parameters": {
         "operation": "indexSpokenWords",
         "video_id": "={{ $json.data.video_id }}",
         "force": true
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
-      "position": [
-        -2768,
-        704
-      ],
+      "position": [-2768, 704],
       "id": "6de6c688-ef19-4e29-aa1c-ebdfac7b3ecb",
       "name": "VideoDB Spoken Indexing",
       "credentials": {
@@ -31,10 +40,7 @@
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
-      "position": [
-        -1872,
-        704
-      ],
+      "position": [-1872, 704],
       "id": "e1ef3243-5a0b-4dc0-9fc2-b848be17f711",
       "name": "VideoDB Transcript",
       "credentials": {
@@ -59,10 +65,7 @@
       },
       "type": "n8n-nodes-base.formTrigger",
       "typeVersion": 2.2,
-      "position": [
-        -3888,
-        704
-      ],
+      "position": [-3888, 704],
       "id": "e0aa98eb-1a08-45b2-b1e4-15698ca3d1cc",
       "name": "Form",
       "webhookId": "aed43ac6-7768-4f66-9220-4d2652b8401c"
@@ -77,10 +80,7 @@
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
-      "position": [
-        -3664,
-        704
-      ],
+      "position": [-3664, 704],
       "id": "2a683528-f79e-42c5-8a36-b7b6e526b549",
       "name": "VideoDB Record Meeting",
       "credentials": {
@@ -98,10 +98,7 @@
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
-      "position": [
-        -3216,
-        640
-      ],
+      "position": [-3216, 640],
       "id": "e111c1a1-304d-4eea-b166-6330390ec823",
       "name": "VideoDB Get Meeting",
       "credentials": {
@@ -117,10 +114,7 @@
       },
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
-      "position": [
-        -3440,
-        704
-      ],
+      "position": [-3440, 704],
       "id": "a82569f6-9f5a-45b3-8f57-183aa07bdde2",
       "name": "Wait For Meeting",
       "webhookId": "2923bf8e-5a7e-4f05-a669-46f250debe9e"
@@ -153,10 +147,7 @@
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [
-        -2992,
-        704
-      ],
+      "position": [-2992, 704],
       "id": "d77d22c1-6a52-414b-a853-b98bbcebfca5",
       "name": "If Meeting"
     },
@@ -164,10 +155,7 @@
       "parameters": {},
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
-      "position": [
-        -2544,
-        704
-      ],
+      "position": [-2544, 704],
       "id": "a3d7214b-6cf0-468e-af5b-1ff17d6b2526",
       "name": "Wait For Indexing",
       "webhookId": "54ef1fee-5c18-4a20-887e-cb14c0ffb567"
@@ -181,10 +169,7 @@
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [
-        -2320,
-        640
-      ],
+      "position": [-2320, 640],
       "id": "07719b64-ef02-419b-bfec-8e1dd297eae4",
       "name": "HTTP Request Indexing",
       "credentials": {
@@ -222,10 +207,7 @@
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [
-        -2096,
-        704
-      ],
+      "position": [-2096, 704],
       "id": "fb85d2de-40f1-4ac7-abd4-68f58609118e",
       "name": "If Indexing"
     },
@@ -235,10 +217,7 @@
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [
-        -1648,
-        704
-      ],
+      "position": [-1648, 704],
       "id": "5f5d97b8-fb5f-4396-b538-b1ba0d8e40b1",
       "name": "Code Transcript"
     },
@@ -252,10 +231,7 @@
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
-      "position": [
-        -1424,
-        704
-      ],
+      "position": [-1424, 704],
       "id": "e9cbafdb-4ee4-4275-97d9-47929147e19b",
       "name": "VideoDB Meeting Insights",
       "credentials": {
@@ -269,10 +245,7 @@
       "parameters": {},
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
-      "position": [
-        -1200,
-        704
-      ],
+      "position": [-1200, 704],
       "id": "53668a85-1858-414f-b39d-1b343aa6b55f",
       "name": "Wait For Insights",
       "webhookId": "1c2b70ce-b6fa-4064-b611-a084ba697ee0"
@@ -347,10 +320,7 @@
       },
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
-      "position": [
-        -528,
-        608
-      ],
+      "position": [-528, 608],
       "id": "954f5c58-abe4-489a-856f-5cba5583cfce",
       "name": "Edit Interview Fields"
     },
@@ -360,10 +330,7 @@
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [
-        -528,
-        800
-      ],
+      "position": [-528, 800],
       "id": "49c85106-fb9b-41ba-ace0-9791be29f190",
       "name": "Slack Interview Formatting"
     },
@@ -375,10 +342,7 @@
       },
       "type": "n8n-nodes-base.coda",
       "typeVersion": 1.1,
-      "position": [
-        -304,
-        608
-      ],
+      "position": [-304, 608],
       "id": "38b195da-9498-44f2-bc2c-30ae946e327e",
       "name": "Coda Interview Update",
       "credentials": {
@@ -404,10 +368,7 @@
       },
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
-      "position": [
-        -304,
-        800
-      ],
+      "position": [-304, 800],
       "id": "462111da-280b-4bc7-9ec2-441e49260c45",
       "name": "Slack Interview Update",
       "webhookId": "f739fc16-2601-482f-ac9a-55d47f14d929",
@@ -423,13 +384,10 @@
         "content": "# Recording the Interview and fetching its details\n",
         "height": 528,
         "width": 1088,
-        "color": 4
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        -3920,
-        448
-      ],
+      "position": [-3920, 448],
       "typeVersion": 1,
       "id": "328280c3-7a04-41db-9a3a-63f69c711173",
       "name": "Sticky Note9"
@@ -439,13 +397,10 @@
         "content": "# Indexing the spoken words, fetching and formatting the transcript\n\n",
         "height": 528,
         "width": 1312,
-        "color": 5
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        -2816,
-        448
-      ],
+      "position": [-2816, 448],
       "typeVersion": 1,
       "id": "48e331b4-49ea-4d78-9fdc-69a9683e2d3b",
       "name": "Sticky Note10"
@@ -455,13 +410,10 @@
         "content": "# Generating Interview Insights",
         "height": 528,
         "width": 896,
-        "color": 6
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        -1488,
-        448
-      ],
+      "position": [-1488, 448],
       "typeVersion": 1,
       "id": "2de28e59-b59b-41ff-8d07-4d2b8bdf0ece",
       "name": "Sticky Note11"
@@ -471,13 +423,10 @@
         "content": "# Sending to Coda and Slack",
         "height": 528,
         "width": 512,
-        "color": 3
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        -576,
-        448
-      ],
+      "position": [-576, 448],
       "typeVersion": 1,
       "id": "ca19dc63-2945-494e-a251-7324d171c09a",
       "name": "Sticky Note15"
@@ -491,10 +440,7 @@
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [
-        -976,
-        640
-      ],
+      "position": [-976, 640],
       "id": "b77e9693-b17c-40da-bdb7-4e1a09aad3ff",
       "name": "HTTP Request Insights",
       "credentials": {
@@ -532,10 +478,7 @@
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [
-        -752,
-        704
-      ],
+      "position": [-752, 704],
       "id": "5c7c3b7c-ae2d-4430-98c9-f40c9b2e297f",
       "name": "If complete"
     }

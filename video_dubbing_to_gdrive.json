@@ -2,6 +2,18 @@
   "nodes": [
     {
       "parameters": {
+        "content": "# Video Dubbing Workflow\n\nDub YouTube videos to another language and save to Google Drive.\n\n### How it works\n1. Submit YouTube video URL via form\n2. Video uploaded to VideoDB for processing\n3. AI generates dubbed audio in target language\n4. New video created with dubbed audio track\n5. Dubbed video saved to Google Drive\n\n### Setup steps\n1. Add **VideoDB API** credentials\n2. Configure **Google Drive** OAuth credentials\n3. Update target language code in VideoDB Dub node\n4. Update target folder ID in Google Drive node\n5. Activate workflow and submit videos via form",
+        "height": 520,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [-280, -224],
+      "typeVersion": 1,
+      "id": "main-sticky-note-001",
+      "name": "Sticky Note Main"
+    },
+    {
+      "parameters": {
         "operation": "upload",
         "collection_id": "c-13c321cd-0d5f-4f90-872e-24e60d5ec61d",
         "url": "={{ $json['Youtube Video URL'] }}",
@@ -10,10 +22,7 @@
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
-      "position": [
-        496,
-        -32
-      ],
+      "position": [496, -32],
       "id": "91464555-357b-4b7a-8456-e18786c45f60",
       "name": "VideoDB",
       "credentials": {
@@ -27,10 +36,7 @@
       "parameters": {},
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
-      "position": [
-        720,
-        -32
-      ],
+      "position": [720, -32],
       "id": "b19dc844-a712-476c-bca1-8d28fbf9ad24",
       "name": "Wait",
       "webhookId": "3db670b3-2254-47e4-93f8-ac668963ab81"
@@ -44,10 +50,7 @@
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [
-        944,
-        -96
-      ],
+      "position": [944, -96],
       "id": "1a4d1669-44d8-4a0d-994a-eb8d07d99866",
       "name": "HTTP Request",
       "credentials": {
@@ -85,10 +88,7 @@
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [
-        1168,
-        -32
-      ],
+      "position": [1168, -32],
       "id": "0bd48d18-dd98-420a-af9d-f78acc4bc6ed",
       "name": "If"
     },
@@ -107,10 +107,7 @@
       },
       "type": "n8n-nodes-base.formTrigger",
       "typeVersion": 2.2,
-      "position": [
-        272,
-        -32
-      ],
+      "position": [272, -32],
       "id": "05426058-2442-47a7-86ac-eb37ac4fe5bc",
       "name": "On form submission",
       "webhookId": "02763c93-74fe-40a0-8988-5fa33d0d558d"
@@ -124,10 +121,7 @@
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
-      "position": [
-        1392,
-        -32
-      ],
+      "position": [1392, -32],
       "id": "4e830877-868a-4dd0-9e56-a5ce5e2dbb3c",
       "name": "VideoDB Dub",
       "credentials": {
@@ -141,10 +135,7 @@
       "parameters": {},
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
-      "position": [
-        1616,
-        -32
-      ],
+      "position": [1616, -32],
       "id": "ba391194-421f-419f-b8b1-b84d09e6e6e5",
       "name": "Wait1",
       "webhookId": "3db670b3-2254-47e4-93f8-ac668963ab81"
@@ -158,10 +149,7 @@
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [
-        1840,
-        -96
-      ],
+      "position": [1840, -96],
       "id": "2b04cd0b-056c-4600-9d51-4fd018518f03",
       "name": "HTTP Request1",
       "credentials": {
@@ -199,10 +187,7 @@
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [
-        2064,
-        -32
-      ],
+      "position": [2064, -32],
       "id": "a3a87b48-5d19-4d1c-8ffa-acc06ba25e19",
       "name": "If Dubbed"
     },
@@ -214,10 +199,7 @@
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
-      "position": [
-        2288,
-        -32
-      ],
+      "position": [2288, -32],
       "id": "59934e01-648b-45cd-a5b5-11c440224a45",
       "name": "Video Download URL",
       "credentials": {
@@ -231,10 +213,7 @@
       "parameters": {},
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
-      "position": [
-        2512,
-        -32
-      ],
+      "position": [2512, -32],
       "id": "0ddfd804-abaa-4ea9-bd24-544d16d27ec8",
       "name": "Wait2",
       "webhookId": "3db670b3-2254-47e4-93f8-ac668963ab81"
@@ -248,10 +227,7 @@
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [
-        2736,
-        -96
-      ],
+      "position": [2736, -96],
       "id": "d008ab7a-6de9-4252-aa85-c362b3708e50",
       "name": "HTTP Request Download",
       "credentials": {
@@ -289,10 +265,7 @@
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [
-        2960,
-        -32
-      ],
+      "position": [2960, -32],
       "id": "d6bbec70-ef0c-4cf5-a572-1746c980c6b4",
       "name": "If Download URL"
     },
@@ -303,10 +276,7 @@
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [
-        3184,
-        -32
-      ],
+      "position": [3184, -32],
       "id": "d89bb7ba-1b30-40da-af36-c2d2e74a6b08",
       "name": "HTTP Request Download File"
     },
@@ -329,10 +299,7 @@
       },
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
-      "position": [
-        3408,
-        -32
-      ],
+      "position": [3408, -32],
       "id": "e7d380ed-98a7-4af1-805e-b7e15a1cd8c3",
       "name": "Upload file",
       "credentials": {
@@ -347,13 +314,10 @@
         "content": "# Video Upload to VideoDB",
         "height": 432,
         "width": 1152,
-        "color": 6
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        192,
-        -224
-      ],
+      "position": [192, -224],
       "typeVersion": 1,
       "id": "cd208896-a761-4c23-911c-af74f6ad5c25",
       "name": "Sticky Note"
@@ -363,13 +327,10 @@
         "content": "# Dubbing the Video",
         "height": 432,
         "width": 864,
-        "color": 5
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        1360,
-        -224
-      ],
+      "position": [1360, -224],
       "typeVersion": 1,
       "id": "154cf446-442b-415c-9529-9eebc06b81c0",
       "name": "Sticky Note1"
@@ -379,13 +340,10 @@
         "content": "# Generating the Download URL\n",
         "height": 432,
         "width": 880,
-        "color": 4
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        2240,
-        -224
-      ],
+      "position": [2240, -224],
       "typeVersion": 1,
       "id": "ab2e89ba-3590-4b33-9a83-fc0669ed8992",
       "name": "Sticky Note2"
@@ -395,13 +353,10 @@
         "content": "# Uploading to GDrive\n",
         "height": 432,
         "width": 528,
-        "color": 3
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        3136,
-        -224
-      ],
+      "position": [3136, -224],
       "typeVersion": 1,
       "id": "ddd89efd-4063-424e-acf4-9a00434c3b6d",
       "name": "Sticky Note3"

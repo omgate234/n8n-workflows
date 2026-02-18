@@ -1090,7 +1090,7 @@
         "content": "",
         "height": 864,
         "width": 1088,
-        "color": 4
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
@@ -1106,7 +1106,7 @@
         "content": "",
         "height": 864,
         "width": 1296,
-        "color": 5
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
@@ -1122,7 +1122,7 @@
         "content": "",
         "height": 1088,
         "width": 1536,
-        "color": 6
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
@@ -1154,7 +1154,7 @@
         "content": "",
         "height": 368,
         "width": 528,
-        "color": 2
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
@@ -1170,7 +1170,7 @@
         "content": "",
         "height": 368,
         "width": 528,
-        "color": 4
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
@@ -1186,7 +1186,7 @@
         "content": "",
         "height": 368,
         "width": 528,
-        "color": 5
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
@@ -1202,7 +1202,7 @@
         "content": "",
         "height": 208,
         "width": 528,
-        "color": 3
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
@@ -1293,7 +1293,7 @@
         "content": "## Sync Meeting Automation\nThis branch of the workflow automates the post-meeting tasks for Sync meetings. \n\n- The **Edit Sync Fields** node processes the insights into a structured format with fields like `Date`, `Meeting Title`, `Summary`, and `Action Points`. The data is then updated in a Coda document via the **Coda Sync Update** node, ensuring a persistent record. \n\n- Concurrently, the **Slack Sync Formatting** node prepares a concise, readable message, which is then posted to the designated Slack channel by the **Slack Sync Update** node, keeping the team updated with key takeaways and action items.",
         "height": 368,
         "width": 528,
-        "color": 2
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
@@ -1309,7 +1309,7 @@
         "content": "## Planning Meeting Automation\nThis branch is dedicated to streamlining the output from Planning meetings. \n\n- The **Edit Planning Fields** node extracts and formats key data points, including `Date`, `Meeting Title`, `Summary`, and `Strategic Outcomes`. This structured data is then used by the **Coda Planning Update** node to automatically update a Coda document, serving as a centralized source of truth for planning outcomes. \n\n- The **Slack Planning Formatting** node then crafts a well-structured message, which is broadcast to a Slack channel via the **Slack Planning Update** node, ensuring all stakeholders are aligned on strategic goals and decisions.",
         "height": 368,
         "width": 528,
-        "color": 4
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
@@ -1325,7 +1325,7 @@
         "content": "## Interview Automation\nThis branch automates the follow-up process for Interview meetings. \n\n- The **Edit Interview Fields** node organizes the generated insights into key fields such as `Date`, `Candidate Name`, `Role Applying For`, and a final `Recommendation`. This information is then pushed to a Coda document via the **Coda Interview Update** node, providing a single source for all interview notes. \n\n- Simultaneously, the **Slack Interview Formatting** node prepares a detailed message that is posted to a Slack channel using the **Slack Interview Update** node, providing timely updates to the hiring team on candidate progress and feedback.",
         "height": 368,
         "width": 528,
-        "color": 5
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
@@ -1341,7 +1341,7 @@
         "content": "## Sales Deal Creation\nThis branch automates the post-meeting workflow for sales calls by directly integrating with Hubspot CRM. \n\n- The `Create a deal` node uses the HubSpot API to automatically generate a new deal from the meeting data. This ensures that every potential opportunity is captured and tracked in the sales pipeline, eliminating manual data entry and streamlining the sales process for improved efficiency and follow-up.",
         "height": 208,
         "width": 528,
-        "color": 3
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [

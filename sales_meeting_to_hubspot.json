@@ -2,16 +2,25 @@
   "nodes": [
     {
       "parameters": {
+        "content": "# Sales Meeting to HubSpot Workflow\n\nRecord sales calls and create HubSpot deals automatically.\n\n### How it works\n1. Submit sales meeting URL via form\n2. VideoDB bot joins and records the call\n3. Transcript generated with speaker identification\n4. AI extracts deal name, stage, amount, and description\n5. New deal created in HubSpot automatically\n\n### Setup steps\n1. Add **VideoDB API** credentials\n2. Configure **HubSpot** API credentials\n3. Verify pipeline and stage mappings match your CRM\n4. Activate workflow and share form URL with sales team",
+        "height": 520,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [-480, 0],
+      "typeVersion": 1,
+      "id": "main-sticky-note-001",
+      "name": "Sticky Note Main"
+    },
+    {
+      "parameters": {
         "operation": "indexSpokenWords",
         "video_id": "={{ $json.data.video_id }}",
         "force": true
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
-      "position": [
-        1152,
-        256
-      ],
+      "position": [1152, 256],
       "id": "f34aec6e-b2e8-4b35-a035-55c7e3dc7c5b",
       "name": "VideoDB Spoken Indexing",
       "credentials": {
@@ -31,10 +40,7 @@
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
-      "position": [
-        2048,
-        256
-      ],
+      "position": [2048, 256],
       "id": "c17c1d37-bf3c-4779-848e-f70f98f5dfcc",
       "name": "VideoDB Transcript",
       "credentials": {
@@ -59,10 +65,7 @@
       },
       "type": "n8n-nodes-base.formTrigger",
       "typeVersion": 2.2,
-      "position": [
-        32,
-        256
-      ],
+      "position": [32, 256],
       "id": "35be73aa-0fa2-4da3-aa36-b3e1beb1ceeb",
       "name": "Form",
       "webhookId": "aed43ac6-7768-4f66-9220-4d2652b8401c"
@@ -77,10 +80,7 @@
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
-      "position": [
-        256,
-        256
-      ],
+      "position": [256, 256],
       "id": "5431cbbb-e5ed-4c61-b82b-0cd4d98e336b",
       "name": "VideoDB Record Meeting",
       "credentials": {
@@ -98,10 +98,7 @@
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
-      "position": [
-        704,
-        192
-      ],
+      "position": [704, 192],
       "id": "9cac84b1-edc1-4352-8659-366c78435b73",
       "name": "VideoDB Get Meeting",
       "credentials": {
@@ -117,10 +114,7 @@
       },
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
-      "position": [
-        480,
-        256
-      ],
+      "position": [480, 256],
       "id": "cd2fa717-2f47-4530-ad61-d72a3421dba4",
       "name": "Wait For Meeting",
       "webhookId": "2923bf8e-5a7e-4f05-a669-46f250debe9e"
@@ -153,10 +147,7 @@
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [
-        928,
-        256
-      ],
+      "position": [928, 256],
       "id": "bd8480d8-094c-4dda-9148-b22db152bf9a",
       "name": "If Meeting"
     },
@@ -164,10 +155,7 @@
       "parameters": {},
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
-      "position": [
-        1376,
-        256
-      ],
+      "position": [1376, 256],
       "id": "23c51cdb-2881-4d3d-9070-f2a61167def9",
       "name": "Wait For Indexing",
       "webhookId": "54ef1fee-5c18-4a20-887e-cb14c0ffb567"
@@ -181,10 +169,7 @@
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [
-        1600,
-        192
-      ],
+      "position": [1600, 192],
       "id": "ad6d784e-39e2-46b7-b611-9e4304b4694c",
       "name": "HTTP Request Indexing",
       "credentials": {
@@ -222,10 +207,7 @@
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [
-        1824,
-        256
-      ],
+      "position": [1824, 256],
       "id": "fda36ee1-811b-43f0-8829-53178607b057",
       "name": "If Indexing"
     },
@@ -235,10 +217,7 @@
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [
-        2272,
-        256
-      ],
+      "position": [2272, 256],
       "id": "1df7f6b1-d8d9-449d-b959-23671185f2c6",
       "name": "Code Transcript"
     },
@@ -252,10 +231,7 @@
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
-      "position": [
-        2496,
-        256
-      ],
+      "position": [2496, 256],
       "id": "deaf8984-9d98-44dd-9f4b-585d69d00f41",
       "name": "VideoDB Meeting Insights",
       "credentials": {
@@ -269,10 +245,7 @@
       "parameters": {},
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
-      "position": [
-        2720,
-        256
-      ],
+      "position": [2720, 256],
       "id": "4a60fe6f-7a7b-4e91-a5d2-c8ecb3c2c83a",
       "name": "Wait For Insights",
       "webhookId": "1c2b70ce-b6fa-4064-b611-a084ba697ee0"
@@ -282,13 +255,10 @@
         "content": "# Recording the Sales Meeting and fetching its details\n",
         "height": 528,
         "width": 1088,
-        "color": 4
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        0,
-        0
-      ],
+      "position": [0, 0],
       "typeVersion": 1,
       "id": "077a07ed-9576-44e8-98c1-270bbb07e90e",
       "name": "Sticky Note9"
@@ -298,13 +268,10 @@
         "content": "# Indexing the spoken words, fetching and formatting the transcript\n\n",
         "height": 528,
         "width": 1312,
-        "color": 5
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        1104,
-        0
-      ],
+      "position": [1104, 0],
       "typeVersion": 1,
       "id": "c0d89f5b-feb0-48f3-a095-945ded00d9df",
       "name": "Sticky Note10"
@@ -314,13 +281,10 @@
         "content": "# Generating Sales Insights",
         "height": 528,
         "width": 896,
-        "color": 6
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        2432,
-        0
-      ],
+      "position": [2432, 0],
       "typeVersion": 1,
       "id": "93eec07b-76a0-4891-b66b-c676e4ce3402",
       "name": "Sticky Note11"
@@ -334,10 +298,7 @@
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [
-        2944,
-        192
-      ],
+      "position": [2944, 192],
       "id": "82cc3eba-dfbb-48d9-9d8b-bf19175a014d",
       "name": "HTTP Request Insights",
       "credentials": {
@@ -375,10 +336,7 @@
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [
-        3168,
-        256
-      ],
+      "position": [3168, 256],
       "id": "cab11815-6f86-48de-ba10-3b2bed4a2cc1",
       "name": "If complete"
     },
@@ -395,10 +353,7 @@
       },
       "type": "n8n-nodes-base.hubspot",
       "typeVersion": 2.1,
-      "position": [
-        3472,
-        240
-      ],
+      "position": [3472, 240],
       "id": "24e89ea3-5c01-48a1-8cd0-6aef47ea91bc",
       "name": "Create a deal",
       "credentials": {
@@ -413,13 +368,10 @@
         "content": "# Create Hubspot Deal\n",
         "height": 528,
         "width": 432,
-        "color": 3
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        3360,
-        0
-      ],
+      "position": [3360, 0],
       "typeVersion": 1,
       "id": "eb69a5ce-3b09-4110-89fa-16ab58d08428",
       "name": "Sticky Note16"

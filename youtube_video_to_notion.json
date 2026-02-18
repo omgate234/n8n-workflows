@@ -2,19 +2,26 @@
   "nodes": [
     {
       "parameters": {
+        "content": "# YouTube to Notion Workflow\n\nMonitor YouTube channels and create AI-generated video summaries in Notion.\n\n### How it works\n1. RSS trigger monitors YouTube channel for new videos\n2. Video uploaded to VideoDB for processing\n3. Spoken words indexed and transcript generated\n4. AI creates engaging digest notes from content\n5. New Notion database page created with summary\n\n### Setup steps\n1. Add **VideoDB API** credentials\n2. Configure **Notion** API and database ID\n3. Update RSS feed URL for your target channel\n4. Activate workflow to start monitoring",
+        "height": 520,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [-1200, -96],
+      "typeVersion": 1,
+      "id": "main-sticky-note-001",
+      "name": "Sticky Note Main"
+    },
+    {
+      "parameters": {
         "pollTimes": {
-          "item": [
-            {}
-          ]
+          "item": [{}]
         },
         "feedUrl": "https://www.youtube.com/feeds/videos.xml?user=dailytechnewsshow"
       },
       "type": "n8n-nodes-base.rssFeedReadTrigger",
       "typeVersion": 1,
-      "position": [
-        -672,
-        64
-      ],
+      "position": [-672, 64],
       "id": "424ae67e-e3af-4b1e-8fc6-89d96dc9638b",
       "name": "RSS Feed Trigger"
     },
@@ -28,10 +35,7 @@
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
-      "position": [
-        -448,
-        64
-      ],
+      "position": [-448, 64],
       "id": "f1f5903d-548a-496e-803b-1c087d60e6eb",
       "name": "VideoDB",
       "credentials": {
@@ -45,10 +49,7 @@
       "parameters": {},
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
-      "position": [
-        -224,
-        64
-      ],
+      "position": [-224, 64],
       "id": "607fb77d-eaf1-4f34-8dd4-23ae8b5da049",
       "name": "Wait",
       "webhookId": "9d6fcce0-1cf9-4d91-b54e-45234a2a6913"
@@ -60,10 +61,7 @@
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [
-        0,
-        0
-      ],
+      "position": [0, 0],
       "id": "76a5aef6-f23c-4b15-9b42-4e87fd09feb7",
       "name": "HTTP Request"
     },
@@ -94,10 +92,7 @@
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [
-        224,
-        64
-      ],
+      "position": [224, 64],
       "id": "4b85cd35-d207-416c-89b6-e8df74d3f899",
       "name": "If"
     },
@@ -109,10 +104,7 @@
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
-      "position": [
-        448,
-        64
-      ],
+      "position": [448, 64],
       "id": "f212bc25-b9d0-4799-9b4f-26b46602d03b",
       "name": "VideoDB1",
       "credentials": {
@@ -126,10 +118,7 @@
       "parameters": {},
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
-      "position": [
-        672,
-        64
-      ],
+      "position": [672, 64],
       "id": "74d1c47b-dfef-4fab-bfa3-7dce2474ae22",
       "name": "Wait1",
       "webhookId": "9d6fcce0-1cf9-4d91-b54e-45234a2a6913"
@@ -143,10 +132,7 @@
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [
-        896,
-        0
-      ],
+      "position": [896, 0],
       "id": "f71a8c34-d001-43c7-a8f8-84c3089c9ec0",
       "name": "HTTP Request1",
       "credentials": {
@@ -183,10 +169,7 @@
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [
-        1120,
-        64
-      ],
+      "position": [1120, 64],
       "id": "367d3c2a-c4e9-450e-b070-b33523f48261",
       "name": "If1"
     },
@@ -198,10 +181,7 @@
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
-      "position": [
-        1344,
-        64
-      ],
+      "position": [1344, 64],
       "id": "6d5760ab-11b2-4a27-abda-aea0e640a475",
       "name": "VideoDB2",
       "credentials": {
@@ -221,10 +201,7 @@
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
-      "position": [
-        1568,
-        64
-      ],
+      "position": [1568, 64],
       "id": "184cd194-55ee-49e8-beb9-a0dc13fe3ba8",
       "name": "VideoDB3",
       "credentials": {
@@ -238,10 +215,7 @@
       "parameters": {},
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
-      "position": [
-        1792,
-        64
-      ],
+      "position": [1792, 64],
       "id": "f55813db-0b31-4823-aacc-799b6466c1c3",
       "name": "Wait2",
       "webhookId": "9d6fcce0-1cf9-4d91-b54e-45234a2a6913"
@@ -255,10 +229,7 @@
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [
-        2016,
-        0
-      ],
+      "position": [2016, 0],
       "id": "e8049e98-62d2-41e4-b3b0-fcc52509ab3a",
       "name": "HTTP Request2",
       "credentials": {
@@ -295,10 +266,7 @@
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [
-        2240,
-        64
-      ],
+      "position": [2240, 64],
       "id": "e19a937c-f904-41b4-8c66-241f1b365db6",
       "name": "If2"
     },
@@ -332,10 +300,7 @@
       },
       "type": "n8n-nodes-base.notion",
       "typeVersion": 2.2,
-      "position": [
-        2480,
-        48
-      ],
+      "position": [2480, 48],
       "id": "e7ae1f70-54c1-4bad-af8a-ec1dd033481d",
       "name": "Create a database page",
       "credentials": {
@@ -350,13 +315,10 @@
         "content": "## Fetching the latest Youtube video from RSS feed and uploading it to VideoDB",
         "height": 416,
         "width": 1104,
-        "color": 5
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        -720,
-        -96
-      ],
+      "position": [-720, -96],
       "typeVersion": 1,
       "id": "ac39e0cc-828c-4cf7-9982-b1f8d8aea013",
       "name": "Sticky Note"
@@ -366,13 +328,10 @@
         "content": "## Indexing the spoken words in the video and fetching the transcript",
         "height": 416,
         "width": 1104,
-        "color": 6
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        400,
-        -96
-      ],
+      "position": [400, -96],
       "typeVersion": 1,
       "id": "228d1016-237c-4f59-b9f3-907459140879",
       "name": "Sticky Note1"
@@ -382,13 +341,10 @@
         "content": "## Generating digest notes from the transcript and sending it to Notion",
         "height": 416,
         "width": 1136,
-        "color": 3
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        1520,
-        -96
-      ],
+      "position": [1520, -96],
       "typeVersion": 1,
       "id": "e5768c1c-7186-4e7d-b194-7ee1e81a4b32",
       "name": "Sticky Note2"

@@ -1,13 +1,22 @@
 {
   "nodes": [
     {
+      "parameters": {
+        "content": "# Meeting Summary Workflow\n\nRecord meetings, generate AI summaries with action items, and distribute to Coda and Slack.\n\n### How it works\n1. Submit meeting URL via the form trigger\n2. VideoDB bot joins and records the meeting\n3. Spoken words are indexed and transcript generated\n4. AI extracts meeting title, summary, and action items\n5. Results sent to Coda table and Slack channel\n\n### Setup steps\n1. Add **VideoDB API** credentials\n2. Configure **Coda** document and table IDs\n3. Set up **Slack** bot and channel\n4. Update Slack user ID mappings in formatting node",
+        "height": 520,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [-3840, -80],
+      "typeVersion": 1,
+      "id": "main-sticky-note-001",
+      "name": "Sticky Note Main"
+    },
+    {
       "parameters": {},
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
-      "position": [
-        -2016,
-        96
-      ],
+      "position": [-2016, 96],
       "id": "c841f0f7-a24e-48b3-9aab-3d98d8aaf48f",
       "name": "Wait",
       "webhookId": "9ae8bdb6-433a-4ab3-a571-8350443e8796"
@@ -40,10 +49,7 @@
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [
-        -1568,
-        96
-      ],
+      "position": [-1568, 96],
       "id": "4b5575ae-867a-4261-8a70-ce5e600007b1",
       "name": "If"
     },
@@ -55,10 +61,7 @@
       },
       "type": "n8n-nodes-base.coda",
       "typeVersion": 1.1,
-      "position": [
-        448,
-        0
-      ],
+      "position": [448, 0],
       "id": "dcb586f7-9396-41ed-b006-bc6cfeab5d3f",
       "name": "Create a row",
       "credentials": {
@@ -102,10 +105,7 @@
       },
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
-      "position": [
-        224,
-        0
-      ],
+      "position": [224, 0],
       "id": "de5093e1-9876-4ed4-9893-18607d674895",
       "name": "Edit Fields"
     },
@@ -118,10 +118,7 @@
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [
-        -1792,
-        16
-      ],
+      "position": [-1792, 16],
       "id": "e85cc5e4-2991-4757-86ab-18a00a5762ab",
       "name": "HTTP Request",
       "credentials": {
@@ -140,10 +137,7 @@
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
-      "position": [
-        -2240,
-        96
-      ],
+      "position": [-2240, 96],
       "id": "4c8ead37-6596-490a-91c7-0f5d0d2fe465",
       "name": "VideoDB Spoken Indexing",
       "credentials": {
@@ -163,10 +157,7 @@
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
-      "position": [
-        -1344,
-        96
-      ],
+      "position": [-1344, 96],
       "id": "4cfef648-101e-464c-901e-8fcf37f07b13",
       "name": "VideoDB Transcript",
       "credentials": {
@@ -185,10 +176,7 @@
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [
-        -448,
-        16
-      ],
+      "position": [-448, 16],
       "id": "87f7296b-1182-46d1-9b78-aa1d1654a38b",
       "name": "HTTP Request1",
       "credentials": {
@@ -202,10 +190,7 @@
       "parameters": {},
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
-      "position": [
-        -672,
-        96
-      ],
+      "position": [-672, 96],
       "id": "b50a71d8-1404-4c13-a831-12b1084a813d",
       "name": "Wait for Summary",
       "webhookId": "d960a894-09ea-4175-89af-5562b34fdf88"
@@ -227,10 +212,7 @@
       },
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
-      "position": [
-        224,
-        192
-      ],
+      "position": [224, 192],
       "id": "b8788ee8-3e6c-484d-b11a-793d8f2e263b",
       "name": "Send a message",
       "webhookId": "317e8a35-ebc6-4e05-a551-f928c392b721",
@@ -269,10 +251,7 @@
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [
-        -224,
-        96
-      ],
+      "position": [-224, 96],
       "id": "70ad3639-f792-45d1-8148-38ef7813a29a",
       "name": "If summary complete"
     },
@@ -282,10 +261,7 @@
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [
-        0,
-        192
-      ],
+      "position": [0, 192],
       "id": "c9283e99-76c0-4abb-9852-08e15c94d550",
       "name": "Slack Formatting"
     },
@@ -295,10 +271,7 @@
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [
-        -1120,
-        96
-      ],
+      "position": [-1120, 96],
       "id": "1d5d8d5f-3f07-42c6-875c-5e024a5fa256",
       "name": "Transcript Formatting"
     },
@@ -312,10 +285,7 @@
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
-      "position": [
-        -896,
-        96
-      ],
+      "position": [-896, 96],
       "id": "39dffdbe-6109-4b29-acf1-8c9870df789f",
       "name": "VideoDB Generate Summary",
       "credentials": {
@@ -331,10 +301,7 @@
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [
-        0,
-        0
-      ],
+      "position": [0, 0],
       "id": "8e388613-7e2b-48e0-8d89-78642fabe768",
       "name": "Coda Formatting"
     },
@@ -354,10 +321,7 @@
       },
       "type": "n8n-nodes-base.formTrigger",
       "typeVersion": 2.2,
-      "position": [
-        -3344,
-        112
-      ],
+      "position": [-3344, 112],
       "id": "0cbbb215-ee7a-4068-b7fe-6238873b4c0d",
       "name": "Form",
       "webhookId": "2295d87c-b72b-4bb2-8a1e-35904070f058"
@@ -371,10 +335,7 @@
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
-      "position": [
-        -3120,
-        112
-      ],
+      "position": [-3120, 112],
       "id": "73e283c0-443e-48e1-9e65-d40ad102b5d7",
       "name": "VideoDB Record Meeting",
       "credentials": {
@@ -392,10 +353,7 @@
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
-      "position": [
-        -2672,
-        32
-      ],
+      "position": [-2672, 32],
       "id": "781b0f36-79e8-4fca-86c7-0a67a79b6597",
       "name": "VideoDB Get Meeting",
       "credentials": {
@@ -411,10 +369,7 @@
       },
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
-      "position": [
-        -2896,
-        112
-      ],
+      "position": [-2896, 112],
       "id": "bbc1d76a-388b-49e3-b75c-13016d2d1f8e",
       "name": "Wait For Meeting",
       "webhookId": "9ae8bdb6-433a-4ab3-a571-8350443e8796"
@@ -447,10 +402,7 @@
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [
-        -2448,
-        112
-      ],
+      "position": [-2448, 112],
       "id": "d0fec661-7140-470c-b4f9-0690148e1e09",
       "name": "If Meeting"
     },
@@ -459,13 +411,10 @@
         "content": "# Recording the meeting and fetching its details\n",
         "height": 512,
         "width": 1072,
-        "color": 5
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        -3360,
-        -80
-      ],
+      "position": [-3360, -80],
       "typeVersion": 1,
       "id": "d1479877-003f-43b0-a7df-154759b868b8",
       "name": "Sticky Note"
@@ -475,13 +424,10 @@
         "content": "# Indexing the spoken words and fetching the transcript\n\n",
         "height": 512,
         "width": 1056,
-        "color": 4
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        -2272,
-        -80
-      ],
+      "position": [-2272, -80],
       "typeVersion": 1,
       "id": "81a6b10f-667e-492a-9c61-2f830265c940",
       "name": "Sticky Note1"
@@ -491,13 +437,10 @@
         "content": "# Formatting the transcript and generating meeting summary\n\n",
         "height": 512,
         "width": 1120,
-        "color": 2
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        -1200,
-        -80
-      ],
+      "position": [-1200, -80],
       "typeVersion": 1,
       "id": "ba85ac12-d20e-48e3-8b04-b11d8427e95a",
       "name": "Sticky Note2"
@@ -507,13 +450,10 @@
         "content": "# Formatting the meeting summary and sending to coda/slack\n\n",
         "height": 512,
         "width": 1008,
-        "color": 3
+        "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        -64,
-        -80
-      ],
+      "position": [-64, -80],
       "typeVersion": 1,
       "id": "5512cc56-175c-4765-9098-29f9a4c0bcb2",
       "name": "Sticky Note3"
