@@ -15,7 +15,7 @@
     {
       "parameters": {
         "operation": "upload",
-        "collection_id": "c-13c321cd-0d5f-4f90-872e-24e60d5ec61d",
+        "collection_id": "YOUR_COLLECTION_ID",
         "url": "={{ $json['Youtube Video URL'] }}",
         "name": "=",
         "description": "File to be dubbed to French"
@@ -24,7 +24,7 @@
       "typeVersion": 1,
       "position": [576, 256],
       "id": "7df6bd71-c844-4cd3-ba3d-83a1c8bfb67d",
-      "name": "VideoDB",
+      "name": "Upload Video to VideoDB",
       "credentials": {
         "videoDBApi": {
           "id": "your-videodb-credential-id",
@@ -38,12 +38,12 @@
       "typeVersion": 1.1,
       "position": [800, 256],
       "id": "473f2300-1ace-4b4a-b8f6-e52bf567dbcd",
-      "name": "Wait",
+      "name": "Wait Before Upload Status Check",
       "webhookId": "3db670b3-2254-47e4-93f8-ac668963ab81"
     },
     {
       "parameters": {
-        "url": "={{ $('VideoDB').item.json.data.output_url }}",
+        "url": "={{ $('Upload Video to VideoDB').item.json.data.output_url }}",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "videoDBApi",
         "options": {}
@@ -52,7 +52,7 @@
       "typeVersion": 4.2,
       "position": [1024, 176],
       "id": "ee9799bf-7c91-4597-b871-3f701ea2b51d",
-      "name": "HTTP Request",
+      "name": "Poll Upload Status",
       "credentials": {
         "videoDBApi": {
           "id": "your-videodb-credential-id",
@@ -90,7 +90,7 @@
       "typeVersion": 2.2,
       "position": [1248, 256],
       "id": "750a7801-fabe-44b1-828b-180b9f8fdd50",
-      "name": "If"
+      "name": "Is Upload Complete"
     },
     {
       "parameters": {
@@ -109,7 +109,7 @@
       "typeVersion": 2.2,
       "position": [352, 256],
       "id": "26c93177-4422-4463-a109-6caa71b340b5",
-      "name": "On form submission",
+      "name": "YouTube URL Form Trigger",
       "webhookId": "02763c93-74fe-40a0-8988-5fa33d0d558d"
     },
     {
@@ -118,12 +118,12 @@
       "typeVersion": 1.1,
       "position": [1696, 256],
       "id": "772394f9-d5c7-404d-82b9-a7d334cf1282",
-      "name": "Wait1",
+      "name": "Wait Before Indexing Status Check",
       "webhookId": "3db670b3-2254-47e4-93f8-ac668963ab81"
     },
     {
       "parameters": {
-        "url": "={{ $('VideoDB Indexing').item.json.data.output_url }}",
+        "url": "={{ $('Index Spoken Words').item.json.data.output_url }}",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "videoDBApi",
         "options": {}
@@ -132,7 +132,7 @@
       "typeVersion": 4.2,
       "position": [1920, 176],
       "id": "60e0b0bc-b421-45f8-914f-794ef0d6e336",
-      "name": "HTTP Request1",
+      "name": "Poll Indexing Status",
       "credentials": {
         "videoDBApi": {
           "id": "your-videodb-credential-id",
@@ -144,13 +144,13 @@
       "parameters": {
         "operation": "download",
         "stream_link": "={{ $json.data.stream_link }}",
-        "name": "={{ $('HTTP Request').item.json.response.data.name }}"
+        "name": "={{ $('Poll Upload Status').item.json.response.data.name }}"
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
       "position": [2592, 240],
       "id": "53d37aae-b3ce-4a68-a491-1c56c65567e9",
-      "name": "Video Download URL",
+      "name": "Generate Download Job",
       "credentials": {
         "videoDBApi": {
           "id": "your-videodb-credential-id",
@@ -164,12 +164,12 @@
       "typeVersion": 1.1,
       "position": [2816, 240],
       "id": "70bf4279-8021-4983-a0a0-ff34de9d9bb5",
-      "name": "Wait2",
+      "name": "Wait Before Download Job Check",
       "webhookId": "3db670b3-2254-47e4-93f8-ac668963ab81"
     },
     {
       "parameters": {
-        "url": "={{ $('Video Download URL').item.json.data.output_url }}",
+        "url": "={{ $('Generate Download Job').item.json.data.output_url }}",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "videoDBApi",
         "options": {}
@@ -178,7 +178,7 @@
       "typeVersion": 4.2,
       "position": [3040, 160],
       "id": "13a0b5b0-0dbd-4582-b662-dbc5745a0474",
-      "name": "HTTP Request Download",
+      "name": "Poll Download Job Status",
       "credentials": {
         "videoDBApi": {
           "id": "your-videodb-credential-id",
@@ -216,7 +216,7 @@
       "typeVersion": 2.2,
       "position": [3264, 240],
       "id": "b351c25e-32f9-46e4-a8e6-8e256453c35a",
-      "name": "If Download URL"
+      "name": "Is Download Job Ready"
     },
     {
       "parameters": {
@@ -227,7 +227,7 @@
       "typeVersion": 4.2,
       "position": [3504, 224],
       "id": "5faa1557-9dc1-4fa3-be4e-091170bc482a",
-      "name": "HTTP Request Download File"
+      "name": "Download Subtitled Video File"
     },
     {
       "parameters": {
@@ -250,7 +250,7 @@
       "typeVersion": 3,
       "position": [3728, 224],
       "id": "92438108-723b-45cd-bdb6-92f2a259b715",
-      "name": "Upload file",
+      "name": "Upload Subtitled Video to Google Drive",
       "credentials": {
         "googleDriveOAuth2Api": {
           "id": "your-googledrive-credential-id",
@@ -313,15 +313,15 @@
     {
       "parameters": {
         "operation": "indexSpokenWords",
-        "collection_id": "={{ $('HTTP Request').item.json.response.data.collection_id }}",
-        "video_id": "={{ $('HTTP Request').item.json.response.data.id }}",
+        "collection_id": "={{ $('Poll Upload Status').item.json.response.data.collection_id }}",
+        "video_id": "={{ $('Poll Upload Status').item.json.response.data.id }}",
         "language_code": "en_us"
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
       "position": [1472, 256],
       "id": "edb72ad5-75e8-4b3c-9de1-10e47ef10cd4",
-      "name": "VideoDB Indexing",
+      "name": "Index Spoken Words",
       "credentials": {
         "videoDBApi": {
           "id": "your-videodb-credential-id",
@@ -359,19 +359,19 @@
       "typeVersion": 2.2,
       "position": [2144, 256],
       "id": "1a7255b3-39c5-44ad-b547-28b61f5d1fa3",
-      "name": "If Indexed"
+      "name": "Is Indexing Complete"
     },
     {
       "parameters": {
         "operation": "addSubtitle",
-        "collection_id": "={{ $('HTTP Request').item.json.response.data.collection_id }}",
-        "video_id": "={{ $('HTTP Request').item.json.response.data.id }}"
+        "collection_id": "={{ $('Poll Upload Status').item.json.response.data.collection_id }}",
+        "video_id": "={{ $('Poll Upload Status').item.json.response.data.id }}"
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
       "position": [2352, 240],
       "id": "9dfb8825-2bf9-481e-8ae9-5e39f37bbb43",
-      "name": "Video Subtitle",
+      "name": "Add Subtitle to Video",
       "credentials": {
         "videoDBApi": {
           "id": "your-videodb-credential-id",
@@ -381,186 +381,186 @@
     }
   ],
   "connections": {
-    "VideoDB": {
+    "Upload Video to VideoDB": {
       "main": [
         [
           {
-            "node": "Wait",
+            "node": "Wait Before Upload Status Check",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Wait": {
+    "Wait Before Upload Status Check": {
       "main": [
         [
           {
-            "node": "HTTP Request",
+            "node": "Poll Upload Status",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "HTTP Request": {
+    "Poll Upload Status": {
       "main": [
         [
           {
-            "node": "If",
+            "node": "Is Upload Complete",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "If": {
+    "Is Upload Complete": {
       "main": [
         [
           {
-            "node": "VideoDB Indexing",
+            "node": "Index Spoken Words",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Wait",
+            "node": "Wait Before Upload Status Check",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "On form submission": {
+    "YouTube URL Form Trigger": {
       "main": [
         [
           {
-            "node": "VideoDB",
+            "node": "Upload Video to VideoDB",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Wait1": {
+    "Wait Before Indexing Status Check": {
       "main": [
         [
           {
-            "node": "HTTP Request1",
+            "node": "Poll Indexing Status",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "HTTP Request1": {
+    "Poll Indexing Status": {
       "main": [
         [
           {
-            "node": "If Indexed",
+            "node": "Is Indexing Complete",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Video Download URL": {
+    "Generate Download Job": {
       "main": [
         [
           {
-            "node": "Wait2",
+            "node": "Wait Before Download Job Check",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Wait2": {
+    "Wait Before Download Job Check": {
       "main": [
         [
           {
-            "node": "HTTP Request Download",
+            "node": "Poll Download Job Status",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "HTTP Request Download": {
+    "Poll Download Job Status": {
       "main": [
         [
           {
-            "node": "If Download URL",
+            "node": "Is Download Job Ready",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "If Download URL": {
+    "Is Download Job Ready": {
       "main": [
         [
           {
-            "node": "HTTP Request Download File",
+            "node": "Download Subtitled Video File",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Wait2",
+            "node": "Wait Before Download Job Check",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "HTTP Request Download File": {
+    "Download Subtitled Video File": {
       "main": [
         [
           {
-            "node": "Upload file",
+            "node": "Upload Subtitled Video to Google Drive",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "VideoDB Indexing": {
+    "Index Spoken Words": {
       "main": [
         [
           {
-            "node": "Wait1",
+            "node": "Wait Before Indexing Status Check",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "If Indexed": {
+    "Is Indexing Complete": {
       "main": [
         [
           {
-            "node": "Video Subtitle",
+            "node": "Add Subtitle to Video",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Wait1",
+            "node": "Wait Before Indexing Status Check",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Video Subtitle": {
+    "Add Subtitle to Video": {
       "main": [
         [
           {
-            "node": "Video Download URL",
+            "node": "Generate Download Job",
             "type": "main",
             "index": 0
           }

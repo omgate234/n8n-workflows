@@ -17,18 +17,18 @@
         "pollTimes": {
           "item": [{}]
         },
-        "feedUrl": "https://www.youtube.com/feeds/videos.xml?user=dailytechnewsshow"
+        "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=YOUR_CHANNEL_ID"
       },
       "type": "n8n-nodes-base.rssFeedReadTrigger",
       "typeVersion": 1,
       "position": [-672, 64],
       "id": "424ae67e-e3af-4b1e-8fc6-89d96dc9638b",
-      "name": "RSS Feed Trigger"
+      "name": "Watch YouTube RSS Feed"
     },
     {
       "parameters": {
         "operation": "upload",
-        "collection_id": "c-13c321cd-0d5f-4f90-872e-24e60d5ec61d",
+        "collection_id": "YOUR_COLLECTION_ID",
         "url": "={{ $json.link }}",
         "name": "={{ $json.title }}",
         "description": "={{ $json.author }}"
@@ -37,7 +37,7 @@
       "typeVersion": 1,
       "position": [-448, 64],
       "id": "f1f5903d-548a-496e-803b-1c087d60e6eb",
-      "name": "VideoDB",
+      "name": "Upload Video to VideoDB",
       "credentials": {
         "videoDBApi": {
           "id": "your-videodb-credential-id",
@@ -51,19 +51,19 @@
       "typeVersion": 1.1,
       "position": [-224, 64],
       "id": "607fb77d-eaf1-4f34-8dd4-23ae8b5da049",
-      "name": "Wait",
+      "name": "Wait Before Upload Status Check",
       "webhookId": "9d6fcce0-1cf9-4d91-b54e-45234a2a6913"
     },
     {
       "parameters": {
-        "url": "={{ $('VideoDB').item.json.data.output_url }}",
+        "url": "={{ $('Upload Video to VideoDB').item.json.data.output_url }}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [0, 0],
       "id": "76a5aef6-f23c-4b15-9b42-4e87fd09feb7",
-      "name": "HTTP Request"
+      "name": "Poll Upload Status"
     },
     {
       "parameters": {
@@ -94,7 +94,7 @@
       "typeVersion": 2.2,
       "position": [224, 64],
       "id": "4b85cd35-d207-416c-89b6-e8df74d3f899",
-      "name": "If"
+      "name": "Is Upload Complete"
     },
     {
       "parameters": {
@@ -106,7 +106,7 @@
       "typeVersion": 1,
       "position": [448, 64],
       "id": "f212bc25-b9d0-4799-9b4f-26b46602d03b",
-      "name": "VideoDB1",
+      "name": "Index Spoken Words",
       "credentials": {
         "videoDBApi": {
           "id": "your-videodb-credential-id",
@@ -120,12 +120,12 @@
       "typeVersion": 1.1,
       "position": [672, 64],
       "id": "74d1c47b-dfef-4fab-bfa3-7dce2474ae22",
-      "name": "Wait1",
+      "name": "Wait Before Indexing Status Check",
       "webhookId": "9d6fcce0-1cf9-4d91-b54e-45234a2a6913"
     },
     {
       "parameters": {
-        "url": "={{ $('VideoDB1').item.json.data.output_url }}",
+        "url": "={{ $('Index Spoken Words').item.json.data.output_url }}",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "videoDBApi",
         "options": {}
@@ -134,7 +134,7 @@
       "typeVersion": 4.2,
       "position": [896, 0],
       "id": "f71a8c34-d001-43c7-a8f8-84c3089c9ec0",
-      "name": "HTTP Request1",
+      "name": "Poll Indexing Status",
       "credentials": {
         "videoDBApi": {
           "id": "your-videodb-credential-id",
@@ -171,19 +171,19 @@
       "typeVersion": 2.2,
       "position": [1120, 64],
       "id": "367d3c2a-c4e9-450e-b070-b33523f48261",
-      "name": "If1"
+      "name": "Is Indexing Complete"
     },
     {
       "parameters": {
         "operation": "getTranscript",
-        "collection_id": "={{ $('If').item.json.response.data.collection_id }}",
-        "video_id": "={{ $('If').item.json.response.data.id }}"
+        "collection_id": "={{ $('Is Upload Complete').item.json.response.data.collection_id }}",
+        "video_id": "={{ $('Is Upload Complete').item.json.response.data.id }}"
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
       "position": [1344, 64],
       "id": "6d5760ab-11b2-4a27-abda-aea0e640a475",
-      "name": "VideoDB2",
+      "name": "Get Video Transcript",
       "credentials": {
         "videoDBApi": {
           "id": "your-videodb-credential-id",
@@ -194,7 +194,7 @@
     {
       "parameters": {
         "operation": "generateText",
-        "collection_id": "c-13c321cd-0d5f-4f90-872e-24e60d5ec61d",
+        "collection_id": "YOUR_COLLECTION_ID",
         "prompt": "=Your task is to analyze the following raw transcript of a discussion, identify the core topics, and create quick, engaging, and highly readable digest notes. **Write the output as a finished, professional article, not as a summary or report about the original transcript.** The content must focus entirely on the subject matter and key takeaways for the reader.\n\n**Content Requirements:**\n1.  **Focus:** Extract the main concepts, key arguments, and central conclusions on the topic discussed. **The digest must be written directly about the topics** (e.g., \"The future of X is Y\"), **avoiding phrases that refer back to the speaker or source** (e.g., \"The speaker mentioned X\").\n2.  **Style:** Use clear, concise, and understandable language. The digest must start with a brief, engaging introduction and present the core findings using **bolded bullet points** for maximum readability.\n3.  **Readability:** The final digest notes must be highly engaging and easy to absorb quickly.\n\n**Final Output Format:**\nYour final output MUST be a single, clean JSON object. Do not include any explanations, greetings, or introductory text outside of this JSON structure.\n\nThe JSON object must contain only two fields:\n* `title`: A relevant headline (must be under 80 characters).\n* `text`: The complete, fully-formatted digest content. **(must be under 2000 characters)**\n\nThe Transcript: {{ $json.data.text }}",
         "model_name": "ultra",
         "response_type": "json"
@@ -203,7 +203,7 @@
       "typeVersion": 1,
       "position": [1568, 64],
       "id": "184cd194-55ee-49e8-beb9-a0dc13fe3ba8",
-      "name": "VideoDB3",
+      "name": "Generate AI Digest",
       "credentials": {
         "videoDBApi": {
           "id": "your-videodb-credential-id",
@@ -217,12 +217,12 @@
       "typeVersion": 1.1,
       "position": [1792, 64],
       "id": "f55813db-0b31-4823-aacc-799b6466c1c3",
-      "name": "Wait2",
+      "name": "Wait Before Digest Status Check",
       "webhookId": "9d6fcce0-1cf9-4d91-b54e-45234a2a6913"
     },
     {
       "parameters": {
-        "url": "={{ $('VideoDB3').item.json.data.output_url }}",
+        "url": "={{ $('Generate AI Digest').item.json.data.output_url }}",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "videoDBApi",
         "options": {}
@@ -231,7 +231,7 @@
       "typeVersion": 4.2,
       "position": [2016, 0],
       "id": "e8049e98-62d2-41e4-b3b0-fcc52509ab3a",
-      "name": "HTTP Request2",
+      "name": "Poll Digest Status",
       "credentials": {
         "videoDBApi": {
           "id": "your-videodb-credential-id",
@@ -268,14 +268,14 @@
       "typeVersion": 2.2,
       "position": [2240, 64],
       "id": "e19a937c-f904-41b4-8c66-241f1b365db6",
-      "name": "If2"
+      "name": "Is Digest Ready"
     },
     {
       "parameters": {
         "resource": "databasePage",
         "databaseId": {
           "__rl": true,
-          "value": "285ad4db-55a1-808b-b50e-dbcee4c9a34a",
+          "value": "YOUR_NOTION_DATABASE_ID",
           "mode": "list",
           "cachedResultName": "Notes",
           "cachedResultUrl": "https://www.notion.so/YOUR_NOTION_PAGE_ID"
@@ -302,7 +302,7 @@
       "typeVersion": 2.2,
       "position": [2480, 48],
       "id": "e7ae1f70-54c1-4bad-af8a-ec1dd033481d",
-      "name": "Create a database page",
+      "name": "Create Notion Page",
       "credentials": {
         "notionApi": {
           "id": "your-notion-credential-id",
@@ -351,175 +351,175 @@
     }
   ],
   "connections": {
-    "RSS Feed Trigger": {
+    "Watch YouTube RSS Feed": {
       "main": [
         [
           {
-            "node": "VideoDB",
+            "node": "Upload Video to VideoDB",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "VideoDB": {
+    "Upload Video to VideoDB": {
       "main": [
         [
           {
-            "node": "Wait",
+            "node": "Wait Before Upload Status Check",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Wait": {
+    "Wait Before Upload Status Check": {
       "main": [
         [
           {
-            "node": "HTTP Request",
+            "node": "Poll Upload Status",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "HTTP Request": {
+    "Poll Upload Status": {
       "main": [
         [
           {
-            "node": "If",
+            "node": "Is Upload Complete",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "If": {
+    "Is Upload Complete": {
       "main": [
         [
           {
-            "node": "VideoDB1",
+            "node": "Index Spoken Words",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Wait",
+            "node": "Wait Before Upload Status Check",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "VideoDB1": {
+    "Index Spoken Words": {
       "main": [
         [
           {
-            "node": "Wait1",
+            "node": "Wait Before Indexing Status Check",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Wait1": {
+    "Wait Before Indexing Status Check": {
       "main": [
         [
           {
-            "node": "HTTP Request1",
+            "node": "Poll Indexing Status",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "HTTP Request1": {
+    "Poll Indexing Status": {
       "main": [
         [
           {
-            "node": "If1",
+            "node": "Is Indexing Complete",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "If1": {
+    "Is Indexing Complete": {
       "main": [
         [
           {
-            "node": "VideoDB2",
+            "node": "Get Video Transcript",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Wait1",
+            "node": "Wait Before Indexing Status Check",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "VideoDB2": {
+    "Get Video Transcript": {
       "main": [
         [
           {
-            "node": "VideoDB3",
+            "node": "Generate AI Digest",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "VideoDB3": {
+    "Generate AI Digest": {
       "main": [
         [
           {
-            "node": "Wait2",
+            "node": "Wait Before Digest Status Check",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Wait2": {
+    "Wait Before Digest Status Check": {
       "main": [
         [
           {
-            "node": "HTTP Request2",
+            "node": "Poll Digest Status",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "HTTP Request2": {
+    "Poll Digest Status": {
       "main": [
         [
           {
-            "node": "If2",
+            "node": "Is Digest Ready",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "If2": {
+    "Is Digest Ready": {
       "main": [
         [
           {
-            "node": "Create a database page",
+            "node": "Create Notion Page",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Wait2",
+            "node": "Wait Before Digest Status Check",
             "type": "main",
             "index": 0
           }

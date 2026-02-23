@@ -15,7 +15,7 @@
     {
       "parameters": {
         "operation": "upload",
-        "collection_id": "c-13c321cd-0d5f-4f90-872e-24e60d5ec61d",
+        "collection_id": "YOUR_COLLECTION_ID",
         "url": "={{ $json['Youtube Video URL'] }}",
         "name": "=",
         "description": "File to be dubbed to French"
@@ -24,7 +24,7 @@
       "typeVersion": 1,
       "position": [496, -32],
       "id": "91464555-357b-4b7a-8456-e18786c45f60",
-      "name": "VideoDB",
+      "name": "Upload Video to VideoDB",
       "credentials": {
         "videoDBApi": {
           "id": "your-videodb-credential-id",
@@ -38,12 +38,12 @@
       "typeVersion": 1.1,
       "position": [720, -32],
       "id": "b19dc844-a712-476c-bca1-8d28fbf9ad24",
-      "name": "Wait",
+      "name": "Wait Before Upload Status Check",
       "webhookId": "3db670b3-2254-47e4-93f8-ac668963ab81"
     },
     {
       "parameters": {
-        "url": "={{ $('VideoDB').item.json.data.output_url }}",
+        "url": "={{ $('Upload Video to VideoDB').item.json.data.output_url }}",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "videoDBApi",
         "options": {}
@@ -52,7 +52,7 @@
       "typeVersion": 4.2,
       "position": [944, -96],
       "id": "1a4d1669-44d8-4a0d-994a-eb8d07d99866",
-      "name": "HTTP Request",
+      "name": "Poll Upload Status",
       "credentials": {
         "videoDBApi": {
           "id": "your-videodb-credential-id",
@@ -90,7 +90,7 @@
       "typeVersion": 2.2,
       "position": [1168, -32],
       "id": "0bd48d18-dd98-420a-af9d-f78acc4bc6ed",
-      "name": "If"
+      "name": "Is Upload Complete"
     },
     {
       "parameters": {
@@ -109,21 +109,21 @@
       "typeVersion": 2.2,
       "position": [272, -32],
       "id": "05426058-2442-47a7-86ac-eb37ac4fe5bc",
-      "name": "On form submission",
+      "name": "YouTube URL Form Trigger",
       "webhookId": "02763c93-74fe-40a0-8988-5fa33d0d558d"
     },
     {
       "parameters": {
         "operation": "dubVideo",
-        "collection_id": "={{ $('HTTP Request').item.json.response.data.collection_id }}",
-        "video_id": "={{ $('HTTP Request').item.json.response.data.id }}",
+        "collection_id": "={{ $('Poll Upload Status').item.json.response.data.collection_id }}",
+        "video_id": "={{ $('Poll Upload Status').item.json.response.data.id }}",
         "language_code": "hi"
       },
       "type": "@videodb/n8n-nodes-videodb.videoDb",
       "typeVersion": 1,
       "position": [1392, -32],
       "id": "4e830877-868a-4dd0-9e56-a5ce5e2dbb3c",
-      "name": "VideoDB Dub",
+      "name": "Generate Dubbed Video",
       "credentials": {
         "videoDBApi": {
           "id": "your-videodb-credential-id",
@@ -137,12 +137,12 @@
       "typeVersion": 1.1,
       "position": [1616, -32],
       "id": "ba391194-421f-419f-b8b1-b84d09e6e6e5",
-      "name": "Wait1",
+      "name": "Wait Before Dub Status Check",
       "webhookId": "3db670b3-2254-47e4-93f8-ac668963ab81"
     },
     {
       "parameters": {
-        "url": "={{ $('VideoDB Dub').item.json.data.output_url }}",
+        "url": "={{ $('Generate Dubbed Video').item.json.data.output_url }}",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "videoDBApi",
         "options": {}
@@ -151,7 +151,7 @@
       "typeVersion": 4.2,
       "position": [1840, -96],
       "id": "2b04cd0b-056c-4600-9d51-4fd018518f03",
-      "name": "HTTP Request1",
+      "name": "Poll Dub Status",
       "credentials": {
         "videoDBApi": {
           "id": "your-videodb-credential-id",
@@ -189,7 +189,7 @@
       "typeVersion": 2.2,
       "position": [2064, -32],
       "id": "a3a87b48-5d19-4d1c-8ffa-acc06ba25e19",
-      "name": "If Dubbed"
+      "name": "Is Dubbing Complete"
     },
     {
       "parameters": {
@@ -201,7 +201,7 @@
       "typeVersion": 1,
       "position": [2288, -32],
       "id": "59934e01-648b-45cd-a5b5-11c440224a45",
-      "name": "Video Download URL",
+      "name": "Generate Download Job",
       "credentials": {
         "videoDBApi": {
           "id": "your-videodb-credential-id",
@@ -215,12 +215,12 @@
       "typeVersion": 1.1,
       "position": [2512, -32],
       "id": "0ddfd804-abaa-4ea9-bd24-544d16d27ec8",
-      "name": "Wait2",
+      "name": "Wait Before Download Job Check",
       "webhookId": "3db670b3-2254-47e4-93f8-ac668963ab81"
     },
     {
       "parameters": {
-        "url": "={{ $('Video Download URL').item.json.data.output_url }}",
+        "url": "={{ $('Generate Download Job').item.json.data.output_url }}",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "videoDBApi",
         "options": {}
@@ -229,7 +229,7 @@
       "typeVersion": 4.2,
       "position": [2736, -96],
       "id": "d008ab7a-6de9-4252-aa85-c362b3708e50",
-      "name": "HTTP Request Download",
+      "name": "Poll Download Job Status",
       "credentials": {
         "videoDBApi": {
           "id": "your-videodb-credential-id",
@@ -267,7 +267,7 @@
       "typeVersion": 2.2,
       "position": [2960, -32],
       "id": "d6bbec70-ef0c-4cf5-a572-1746c980c6b4",
-      "name": "If Download URL"
+      "name": "Is Download Job Ready"
     },
     {
       "parameters": {
@@ -278,7 +278,7 @@
       "typeVersion": 4.2,
       "position": [3184, -32],
       "id": "d89bb7ba-1b30-40da-af36-c2d2e74a6b08",
-      "name": "HTTP Request Download File"
+      "name": "Download Dubbed Video File"
     },
     {
       "parameters": {
@@ -301,7 +301,7 @@
       "typeVersion": 3,
       "position": [3408, -32],
       "id": "e7d380ed-98a7-4af1-805e-b7e15a1cd8c3",
-      "name": "Upload file",
+      "name": "Upload Dubbed Video to Google Drive",
       "credentials": {
         "googleDriveOAuth2Api": {
           "id": "your-googledrive-credential-id",
@@ -363,175 +363,175 @@
     }
   ],
   "connections": {
-    "VideoDB": {
+    "Upload Video to VideoDB": {
       "main": [
         [
           {
-            "node": "Wait",
+            "node": "Wait Before Upload Status Check",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Wait": {
+    "Wait Before Upload Status Check": {
       "main": [
         [
           {
-            "node": "HTTP Request",
+            "node": "Poll Upload Status",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "HTTP Request": {
+    "Poll Upload Status": {
       "main": [
         [
           {
-            "node": "If",
+            "node": "Is Upload Complete",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "If": {
+    "Is Upload Complete": {
       "main": [
         [
           {
-            "node": "VideoDB Dub",
+            "node": "Generate Dubbed Video",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Wait",
+            "node": "Wait Before Upload Status Check",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "On form submission": {
+    "YouTube URL Form Trigger": {
       "main": [
         [
           {
-            "node": "VideoDB",
+            "node": "Upload Video to VideoDB",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "VideoDB Dub": {
+    "Generate Dubbed Video": {
       "main": [
         [
           {
-            "node": "Wait1",
+            "node": "Wait Before Dub Status Check",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Wait1": {
+    "Wait Before Dub Status Check": {
       "main": [
         [
           {
-            "node": "HTTP Request1",
+            "node": "Poll Dub Status",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "HTTP Request1": {
+    "Poll Dub Status": {
       "main": [
         [
           {
-            "node": "If Dubbed",
+            "node": "Is Dubbing Complete",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "If Dubbed": {
+    "Is Dubbing Complete": {
       "main": [
         [
           {
-            "node": "Video Download URL",
+            "node": "Generate Download Job",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Wait1",
+            "node": "Wait Before Dub Status Check",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Video Download URL": {
+    "Generate Download Job": {
       "main": [
         [
           {
-            "node": "Wait2",
+            "node": "Wait Before Download Job Check",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Wait2": {
+    "Wait Before Download Job Check": {
       "main": [
         [
           {
-            "node": "HTTP Request Download",
+            "node": "Poll Download Job Status",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "HTTP Request Download": {
+    "Poll Download Job Status": {
       "main": [
         [
           {
-            "node": "If Download URL",
+            "node": "Is Download Job Ready",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "If Download URL": {
+    "Is Download Job Ready": {
       "main": [
         [
           {
-            "node": "HTTP Request Download File",
+            "node": "Download Dubbed Video File",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Wait2",
+            "node": "Wait Before Download Job Check",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "HTTP Request Download File": {
+    "Download Dubbed Video File": {
       "main": [
         [
           {
-            "node": "Upload file",
+            "node": "Upload Dubbed Video to Google Drive",
             "type": "main",
             "index": 0
           }
